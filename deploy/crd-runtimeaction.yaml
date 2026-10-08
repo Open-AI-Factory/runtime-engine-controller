@@ -1,0 +1,64 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: runtimeactions.grp.keti.re.kr
+spec:
+  group: grp.keti.re.kr
+  scope: Namespaced
+  names:
+    kind: RuntimeAction
+    plural: runtimeactions
+    singular: runtimeaction
+    shortNames: [ra]
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - {name: Phase, type: string, jsonPath: .status.phase}
+        - {name: Result, type: string, jsonPath: .status.result}
+        - {name: Plan, type: string, jsonPath: .spec.executionPlanRef}
+        - {name: GPUs, type: integer, jsonPath: .spec.target.gpus}
+        - {name: Adapter, type: string, jsonPath: .status.adapter}
+        - {name: Age, type: date, jsonPath: .metadata.creationTimestamp}
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              required: [target]
+              properties:
+                executionPlanRef: {type: string}
+                workloadRef:
+                  type: object
+                  properties:
+                    kind: {type: string}
+                    namespace: {type: string}
+                    name: {type: string}
+                runtime: {type: string, enum: [pytorch, ddp, fsdp, deepspeed, vllm]}
+                action: {type: string, enum: [Resize, ScaleUp, ScaleDown, Reconfigure, Restart], default: Resize}
+                mode: {type: string, enum: [restart], default: restart}
+                target:
+                  type: object
+                  properties:
+                    gpus: {type: integer, minimum: 1}
+                    gpuCount: {type: integer, minimum: 1}
+                safePolicy:
+                  type: object
+                  properties:
+                    mode: {type: string, enum: [WaitSafePoint, Immediate], default: WaitSafePoint}
+                    timeoutSeconds: {type: number, default: 60}
+                profiling:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                adapterMode: {type: string, enum: [mock, local, torchrun, k8s]}
+                adapterOptions:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                poolSnapshot: {type: string}
+            status:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
