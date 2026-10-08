@@ -1,0 +1,24 @@
+[project]
+name = "grp-runtime"
+version = "0.1.0"
+description = "GRP 런타임 엔진 제어 프로토타입 (RuntimeAction / ExecutionPlan / Runtime Adapter)"
+requires-python = ">=3.11"
+dependencies = ["pyyaml"]
+
+[project.optional-dependencies]
+gpu = ["torch"]
+k8s = ["kopf", "kubernetes"]
+dev = ["pytest"]
+
+[project.scripts]
+keticti = "grp_runtime.keticti:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
