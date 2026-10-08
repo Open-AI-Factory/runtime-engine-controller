@@ -1,0 +1,23 @@
+snapshotVersion: mock-v1
+nodes:
+  - name: node-a
+    interconnect: NVLink
+    gpus:
+      - {index: 0, memoryGb: 80, allocatedTo: tenant-a/llm-train-a}
+      - {index: 1, memoryGb: 80, allocatedTo: tenant-a/llm-train-a}
+      - {index: 2, memoryGb: 80, allocatedTo: tenant-a/llm-train-a}
+      - {index: 3, memoryGb: 80, allocatedTo: tenant-a/llm-train-a}
+      - {index: 4, memoryGb: 80}
+      - {index: 5, memoryGb: 80}
+      - {index: 6, memoryGb: 80, allocatedTo: tenant-b/llm-serve-b}
+      - {index: 7, memoryGb: 80, allocatedTo: tenant-b/llm-serve-b}
+  - name: node-b
+    interconnect: PCIe
+    gpus:
+      - {index: 0, memoryGb: 48}
+      - {index: 1, memoryGb: 48}
+workloads:
+  - ref: tenant-a/llm-train-a
+    parallel: {dp: 2, tp: 2, pp: 1}
+  - ref: tenant-b/llm-serve-b
+    parallel: {dp: 1, tp: 2, pp: 1}
