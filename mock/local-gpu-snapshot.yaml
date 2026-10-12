@@ -1,0 +1,10 @@
+snapshotVersion: local-v2
+nodes:
+  - name: local
+    interconnect: SharedGPU
+    gpus:
+      - {index: 0, memoryGb: 12, physical: local-gpu0}
+      - {index: 1, memoryGb: 12, physical: local-gpu0}
+      - {index: 2, memoryGb: 12, physical: local-gpu0}
+      - {index: 3, memoryGb: 12, physical: local-gpu0}
+workloads: []
