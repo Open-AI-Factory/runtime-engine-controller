@@ -1,0 +1,9 @@
+apiVersion: grp.keti.re.kr/v1alpha1
+kind: RecoveryRequest
+metadata: {name: rr-pipeline-001}
+spec:
+  requestId: pipeline-7781
+  source: workload-pipeline
+  serviceRef: {namespace: keti-dev, name: mlp-serve-local}
+  symptom: {component: endpoint, detail: "추론 요청 timeout"}
+  policy: {mode: Partial}

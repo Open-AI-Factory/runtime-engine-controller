@@ -1,0 +1,8 @@
+apiVersion: grp.keti.re.kr/v1alpha1
+kind: InferenceService
+metadata: {name: mlp-serve-local, namespace: keti-dev}
+spec:
+  driver: local
+  port: 18080
+  model: {name: mlp-268m, hidden: 4096, layers: 16, seed: 0}
+  poolSnapshot: mock/local-gpu-snapshot.yaml

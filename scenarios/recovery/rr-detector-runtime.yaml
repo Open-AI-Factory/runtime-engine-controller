@@ -1,0 +1,9 @@
+apiVersion: grp.keti.re.kr/v1alpha1
+kind: RecoveryRequest
+metadata: {name: rr-detector-001}
+spec:
+  requestId: detector-20261008-0001
+  source: anomaly-detector
+  serviceRef: {namespace: keti-dev, name: mlp-serve-local}
+  symptom: {component: runtime, detail: "health check 3회 연속 실패"}
+  policy: {mode: Partial}
