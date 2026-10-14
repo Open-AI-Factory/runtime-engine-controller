@@ -1,0 +1,16 @@
+apiVersion: grp.keti.re.kr/v1alpha1
+kind: RuntimeAction
+metadata: {name: ra-local-scaledown-001}
+spec:
+  workloadRef: {kind: PyTorchJob, namespace: keti-dev, name: mlp-train-local}
+  runtime: pytorch
+  action: ScaleDown
+  target: {gpuCount: 1}
+  safePolicy: {mode: WaitSafePoint, timeoutSeconds: 30}
+  adapterMode: local
+  adapterOptions: {initialDp: 2, warmupIters: 200, keepRunning: false}
+  profiling:
+    workloadType: training
+    modelMemoryGb: 0.1
+    activationMemoryGb: 0.5
+  poolSnapshot: mock/local-gpu-snapshot.yaml
