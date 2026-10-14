@@ -1,0 +1,16 @@
+apiVersion: grp.keti.re.kr/v1alpha1
+kind: RuntimeAction
+metadata: {name: ra-noplan-001}
+spec:
+  workloadRef: {kind: PyTorchJob, namespace: tenant-a, name: llm-train-a}
+  runtime: pytorch
+  action: ScaleDown
+  target: {gpuCount: 1}
+  adapterMode: mock
+  profiling:
+    workloadType: training
+    modelMemoryGb: 100
+    activationMemoryGb: 10
+    numLayers: 40
+    numAttentionHeads: 40
+  poolSnapshot: mock/cluster-snapshot.yaml

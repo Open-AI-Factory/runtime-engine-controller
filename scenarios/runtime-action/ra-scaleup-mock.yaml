@@ -1,0 +1,17 @@
+apiVersion: grp.keti.re.kr/v1alpha1
+kind: RuntimeAction
+metadata: {name: ra-scaleup-001}
+spec:
+  workloadRef: {kind: PyTorchJob, namespace: tenant-a, name: llm-train-a}
+  runtime: pytorch
+  action: ScaleUp
+  target: {gpuCount: 6}
+  safePolicy: {mode: WaitSafePoint, timeoutSeconds: 10}
+  adapterMode: mock
+  profiling:
+    workloadType: training
+    modelMemoryGb: 100
+    activationMemoryGb: 10
+    numLayers: 40
+    numAttentionHeads: 40
+  poolSnapshot: mock/cluster-snapshot.yaml
