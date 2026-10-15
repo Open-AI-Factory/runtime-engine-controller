@@ -1,0 +1,6 @@
+workloadType: training
+weightsGb: 0.0196
+gradientsGb: 0.0196
+optimizerGb: 0.0391
+activationGbPerSample: 0.000035
+globalBatch: 1024
