@@ -1,0 +1,11 @@
+snapshotVersion: kind-v1
+nodes:
+  - name: grp-worker
+    interconnect: Network
+    gpus:
+      - {index: 0, memoryGb: 2}
+  - name: grp-worker2
+    interconnect: Network
+    gpus:
+      - {index: 0, memoryGb: 2}
+workloads: []
