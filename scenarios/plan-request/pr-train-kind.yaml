@@ -1,0 +1,22 @@
+apiVersion: grp.keti.re.kr/v1alpha1
+kind: PlanRequest
+metadata: {name: train-plan}
+spec:
+  requestId: req-train-0001
+  source: file
+  workloadRef: train
+  runtime: fsdp
+  resources: {gpus: 2}
+  profiling:
+    workloadType: training
+    weightsGb: 0.0196
+    gradientsGb: 0.0196
+    optimizerGb: 0.0391
+    activationGbPerSample: 0.000035
+    globalBatch: 1024
+  poolSnapshot: mock/kind-snapshot.yaml
+  launch:
+    script: workloads/train_ddp.py
+    args: [--max-steps, "1000000"]
+    cpu: "1"
+    memory: 2Gi

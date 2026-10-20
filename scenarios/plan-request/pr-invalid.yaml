@@ -1,0 +1,9 @@
+apiVersion: grp.keti.re.kr/v1alpha1
+kind: PlanRequest
+metadata: {name: train-plan}
+spec:
+  requestId: req-train-0004
+  workloadRef: train
+  resources: {gpus: 0}
+  parallelism: {dp: two}
+  poolSnapshot: mock/kind-snapshot.yaml

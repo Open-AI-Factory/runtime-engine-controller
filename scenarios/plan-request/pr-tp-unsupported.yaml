@@ -1,0 +1,10 @@
+apiVersion: grp.keti.re.kr/v1alpha1
+kind: PlanRequest
+metadata: {name: train-plan}
+spec:
+  requestId: req-train-0003
+  workloadRef: train
+  runtime: fsdp
+  resources: {gpus: 2, gpusPerNode: 1}
+  parallelism: {dp: 1, tp: 2, pp: 1}
+  poolSnapshot: mock/kind-snapshot.yaml
