@@ -1,0 +1,63 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: executionplans.grp.keti.re.kr
+spec:
+  group: grp.keti.re.kr
+  scope: Namespaced
+  names:
+    kind: ExecutionPlan
+    plural: executionplans
+    singular: executionplan
+    shortNames: [eplan]
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - {name: Workload, type: string, jsonPath: .spec.workloadRef}
+        - {name: Runtime, type: string, jsonPath: .spec.runtime}
+        - {name: DP, type: integer, jsonPath: .spec.parallelism.dp}
+        - {name: TP, type: integer, jsonPath: .spec.parallelism.tp}
+        - {name: PP, type: integer, jsonPath: .spec.parallelism.pp}
+        - {name: Nodes, type: integer, jsonPath: .spec.placement.nodes}
+        - {name: Validation, type: string, jsonPath: .status.validation}
+        - {name: State, type: string, jsonPath: .status.state}
+        - {name: Age, type: date, jsonPath: .metadata.creationTimestamp}
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              required: [workloadRef, runtime, parallelism, placement]
+              properties:
+                workloadRef: {type: string}
+                runtime: {type: string, enum: [ddp, fsdp, deepspeed, vllm]}
+                parallelism:
+                  type: object
+                  properties:
+                    dp: {type: integer, minimum: 1}
+                    tp: {type: integer, minimum: 1}
+                    pp: {type: integer, minimum: 1}
+                placement:
+                  type: object
+                  properties:
+                    nodes: {type: integer, minimum: 1}
+                    gpusPerNode: {type: integer, minimum: 1}
+                interconnect: {type: string}
+                profiling:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                launch:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                poolSnapshot: {type: string}
+                planning:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+            status:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true

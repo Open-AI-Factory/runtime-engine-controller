@@ -1,0 +1,22 @@
+apiVersion: grp.keti.re.kr/v1alpha1
+kind: ExecutionPlan
+metadata: {name: big-plan}
+spec:
+  workloadRef: train-big
+  runtime: fsdp
+  parallelism: {dp: 3, tp: 1, pp: 1}
+  placement: {nodes: 3, gpusPerNode: 1}
+  interconnect: rdma
+  profiling:
+    workloadType: training
+    weightsGb: 0.0196
+    gradientsGb: 0.0196
+    optimizerGb: 0.0391
+    activationGbPerSample: 0.000035
+    globalBatch: 1024
+  poolSnapshot: mock/kind-snapshot.yaml
+  launch:
+    script: workloads/train_ddp.py
+    args: [--max-steps, "1000000"]
+    cpu: "1"
+    memory: 2Gi
