@@ -1,0 +1,5 @@
+FROM python:3.12-slim
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu \
+ && pip install --no-cache-dir kubernetes pyyaml numpy
+ENV PYTHONPATH=/work/src PYTHONUNBUFFERED=1
+WORKDIR /work
